@@ -20,7 +20,7 @@ def send_welcome(message):
 
 
 @bot.message_handler(content_types=['video_note'])
-def echo_videos(message):
+def echo_video_notes(message):
     try:
         if message.from_user.id not in USER_ID_OF_ADMINS:
             bot.forward_message(USER_ID_OF_GROUP, message.chat.id, message.message_id)
@@ -42,6 +42,36 @@ def echo_audios(message):
         elif message.from_user.id in USER_ID_OF_ADMINS and message.reply_to_message:
             if message.reply_to_message.forward_from:
                 bot.send_voice(message.reply_to_message.forward_from.id, message.voice.file_id)
+            else:
+                bot.reply_to(message, 'Private User!')
+    except Exception:
+        e = sys.exc_info()
+        print(e)
+
+
+@bot.message_handler(content_types=['photo'])
+def echo_photos(message):
+    try:
+        if message.from_user.id not in USER_ID_OF_ADMINS:
+            bot.forward_message(USER_ID_OF_GROUP, message.chat.id, message.message_id)
+        elif message.from_user.id in USER_ID_OF_ADMINS and message.reply_to_message:
+            if message.reply_to_message.forward_from:
+                bot.send_photo(message.reply_to_message.forward_from.id, message.photo.file_id)
+            else:
+                bot.reply_to(message, 'Private User!')
+    except Exception:
+        e = sys.exc_info()
+        print(e)
+
+
+@bot.message_handler(content_types=['video'])
+def echo_videos(message):
+    try:
+        if message.from_user.id not in USER_ID_OF_ADMINS:
+            bot.forward_message(USER_ID_OF_GROUP, message.chat.id, message.message_id)
+        elif message.from_user.id in USER_ID_OF_ADMINS and message.reply_to_message:
+            if message.reply_to_message.forward_from:
+                bot.send_video(message.reply_to_message.forward_from.id, message.video.file_id)
             else:
                 bot.reply_to(message, 'Private User!')
     except Exception:
